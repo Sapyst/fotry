@@ -213,6 +213,8 @@ pub static CATALOG: &[(&[&str], &str, Option<&str>, &str)] = &[
     (&["Image"], "---", None, "---"),
     (&["Image"], "Image Size…", Some("Cmd+Alt+I"), "image.imageSize"),
     (&["Image"], "Canvas Size…", Some("Cmd+Alt+C"), "image.canvasSize"),
+    (&["Image"], "Upscale…", Some("Cmd+Alt+U"), "image.upscale"),
+    (&["Image"], "Install AI Upscale Engine…", None, "image.upscale.installEngine"),
     (&["Image", "Image Rotation"], "180°", None, "image.imageRotation.180"),
     (&["Image", "Image Rotation"], "90° Clockwise", None, "image.imageRotation.90cw"),
     (&["Image", "Image Rotation"], "90° Counter Clockwise", None, "image.imageRotation.90ccw"),

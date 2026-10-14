@@ -56,6 +56,7 @@ pub mod hidden_target;
 pub mod history_cmds;
 pub mod history_select_cmds;
 pub mod image_cmds;
+pub mod upscale_cmds;
 pub mod inspect;
 pub mod installed_profiles;
 pub mod jobs;

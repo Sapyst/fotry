@@ -511,7 +511,8 @@ fn about_tab_body(app: &mut PhotocraftApp, ui: &mut egui::Ui, tab: &str) {
         "contributors" => crate::credits::contributors_ui(app, ui),
         "models" => crate::credits::models_ui(ui),
         _ => {
-            ui.label(tl!("PhotoCraft — an open-source, native image editor written in Rust."));
+            ui.label(tl!("Array — the image editor of the Arch Quilly suite."));
+            ui.label(tl!("Based on PhotoCraft by the ArtCraft team (MIT OR Apache-2.0), written in Rust."));
             ui.label(crate::i18n::fmt(tl!("Version {version}"), &[("version", &photocraft_engine::build_info::long_version())]));
             ui.add_space(12.0);
             ui.vertical_centered(|ui| {
@@ -520,7 +521,7 @@ fn about_tab_body(app: &mut PhotocraftApp, ui: &mut egui::Ui, tab: &str) {
                 crate::links::link_row(app, ui);
             });
             ui.add_space(10.0);
-            ui.weak("egui · wgpu · photocraft-engine");
+            ui.weak("egui · wgpu · photocraft-engine · Arch Quilly");
         }
     }
 }
@@ -543,7 +544,7 @@ pub fn title(d: &Dialog) -> String {
     match d.kind {
         DialogKind::NewDocument => "New Document".into(),
         DialogKind::About if d.fields.get("systemInfo").and_then(Value::as_bool) == Some(true) => "System Info".into(),
-        DialogKind::About => "About PhotoCraft".into(),
+        DialogKind::About => "About Array".into(),
         DialogKind::LayerStyle => "Layer Style".into(),
         DialogKind::Command => d.fields.get("__label").and_then(Value::as_str).unwrap_or("Command").trim_end_matches('…').to_string(),
         DialogKind::Error => "Error".into(),
@@ -664,6 +665,24 @@ pub fn open_command_dialog(app: &mut PhotocraftApp, command: &str, label: &str) 
     }
     if let Some(id) = crate::adjust_dialog::open(app, command) {
         return id;
+    }
+    // Array: Image › Upscale… is a small form (method and scale); the AI needs its engine.
+    if command == "image.upscale" {
+        let mut f = serde_json::Map::new();
+        f.insert("__command".into(), json!(command));
+        f.insert("__label".into(), json!(label));
+        f.insert("__form".into(), json!(true));
+        f.insert("method".into(), json!("aiPhoto"));
+        f.insert("scale".into(), json!("2"));
+        f.insert("__choices".into(), json!({"method": ["aiPhoto", "aiArt", "lanczos", "preserveDetails"], "scale": ["2", "3", "4"]}));
+        f.insert(
+            "__labels".into(),
+            json!({"method": "Method", "scale": "Scale", "aiPhoto": "AI: photo (Real-ESRGAN)", "aiArt": "AI: art and drawings (Real-ESRGAN)",
+                   "lanczos": "Lanczos (sharp, no AI)", "preserveDetails": "Preserve Details (no AI)", "2": "2×", "3": "3×", "4": "4×"}),
+        );
+        let orig: serde_json::Map<String, Value> = f.iter().filter(|(k, _)| !k.starts_with("__")).map(|(k, v)| (k.clone(), v.clone())).collect();
+        f.insert("__formOrig".into(), Value::Object(orig));
+        return app.ui.open_dialog(DialogKind::Command, f);
     }
     if crate::filter_dialog::has_dialog(command)
         && let Some(id) = crate::filter_dialog::open(app, command)
