@@ -1,4 +1,4 @@
-//! Array (Arch Quilly): Image › Upscale…, enlarging the whole document 2×, 3× or 4×.
+//! Fotry (Arch Quilly): Image › Upscale…, enlarging the whole document 2×, 3× or 4×.
 //!
 //! - `lanczos` and `preserveDetails` are Image Size with that filter: every layer, mask, vector,
 //!   effect and guide scales together.
@@ -6,7 +6,7 @@
 //!   pixels with Real-ESRGAN (realesrgan-ncnn-vulkan, on the GPU through Vulkan): a neural network
 //!   that invents plausible fine detail instead of blurring it. The engine is an external one-shot
 //!   process per layer, so nothing stays in memory between uses. It lives in
-//!   `~/.local/share/arch-quilly/array/realesrgan`; `image.upscale.installEngine` downloads the
+//!   `~/.local/share/arch-quilly/fotry/realesrgan`; `image.upscale.installEngine` downloads the
 //!   official release there (about 45 MB).
 //!
 //! The whole upscale is one background job and one undo step. The AI works on 8-bit RGBA copies
@@ -42,13 +42,16 @@ fn bad(msg: impl Into<String>) -> EngineError {
     EngineError::BadParams { cmd: "image.upscale".into(), msg: msg.into() }
 }
 
-/// `~/.local/share/arch-quilly/array/realesrgan` (XDG_DATA_HOME respected).
+/// `~/.local/share/arch-quilly/fotry/realesrgan` (XDG_DATA_HOME respected).
 fn engine_dir() -> Option<PathBuf> {
     let data = std::env::var_os("XDG_DATA_HOME")
         .filter(|v| !v.is_empty())
         .map(PathBuf::from)
         .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".local/share")))?;
-    Some(data.join("arch-quilly/array/realesrgan"))
+    let dir = data.join("arch-quilly/fotry/realesrgan");
+    // The engine Array (the app's earlier name) installed is used where it already is.
+    let legacy = data.join("arch-quilly/array/realesrgan");
+    Some(if !dir.join(ENGINE_BIN).is_file() && legacy.join(ENGINE_BIN).is_file() { legacy } else { dir })
 }
 
 /// The engine binary and its models folder, when installed.
@@ -66,7 +69,7 @@ fn cache_dir() -> Result<PathBuf> {
         .or_else(|| std::env::var_os("HOME").map(|h| PathBuf::from(h).join(".cache")))
         .ok_or_else(|| EngineError::Other("no home folder for the upscale cache".into()))?;
     // A per-process folder on disk (not /tmp, which is RAM here), removed when the job ends.
-    let dir = base.join("arch-quilly/array/upscale").join(format!("{}-{}", std::process::id(), next_job()));
+    let dir = base.join("arch-quilly/fotry/upscale").join(format!("{}-{}", std::process::id(), next_job()));
     std::fs::create_dir_all(&dir).map_err(|e| EngineError::Other(format!("upscale cache: {e}")))?;
     Ok(dir)
 }
@@ -294,7 +297,7 @@ fn install_engine(s: &mut Session, _: &Value) -> Result<Value> {
             std::fs::create_dir_all(&dir).map_err(|e| EngineError::Other(format!("{}: {e}", dir.display())))?;
             let zip = dir.join("download.zip");
             let ok = Command::new("curl")
-                .args(["-fsSL", "--retry", "2", "-A", "array/2.0", "-o"])
+                .args(["-fsSL", "--retry", "2", "-A", "fotry/2.0", "-o"])
                 .arg(&zip)
                 .arg(ENGINE_URL)
                 .status()

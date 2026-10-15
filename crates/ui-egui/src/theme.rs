@@ -51,10 +51,10 @@ pub enum ThemeKind {
     SoftDark,
     /// A low-contrast light theme: pale violet-grey surfaces, softened dark text and a periwinkle accent.
     SoftLight,
-    /// Array: the Arch Aero desktop's dark look (`crate::aero`), the default.
+    /// Fotry: the Arch Aero desktop's dark look (`crate::aero`), the default.
     #[default]
     AeroDark,
-    /// Array: the Arch Aero desktop's light look (`crate::aero`).
+    /// Fotry: the Arch Aero desktop's light look (`crate::aero`).
     AeroLight,
 }
 

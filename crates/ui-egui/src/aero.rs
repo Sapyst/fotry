@@ -1,4 +1,4 @@
-//! Array (Arch Quilly): the Aero themes, our own look on the Studio layout.
+//! Fotry (Arch Quilly): the Aero themes, our own look on the Studio layout.
 //!
 //! Flat neutral greys taken from the Arch Aero desktop (the same #1e1e1e / #f6f6f6 the panels and
 //! the GTK theme use), rounder corners, and the desktop's accent colour. The accent is read once at

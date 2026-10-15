@@ -6,7 +6,7 @@ use serde_json::{Value, json};
 
 use crate::PhotocraftApp;
 
-// Array: the Arch Quilly suite's links. PhotoCraft (the engine Array is based on) is credited in
+// Fotry: the Arch Quilly suite's links. PhotoCraft (the engine Fotry is based on) is credited in
 // plain text and linked to its repository; the ArtCraft marks are not used (docs/brand/LICENSE-brand.txt).
 pub const UPSTREAM: &str = "https://github.com/storytold/photocraft";
 pub const APP_PAGE: &str = "https://github.com/Sapyst/quilly";

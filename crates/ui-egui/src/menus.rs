@@ -100,10 +100,10 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
     ("window.theme.system", "Sync with system", &["Window", "Theme"], None),
     ("edit.search", "Search…", &["Edit"], Some("Cmd+F")),
     ("help.website", "Arch Quilly on GitHub", &["Help"], None),
-    ("help.upstream", "PhotoCraft (the engine Array is based on)", &["Help"], None),
+    ("help.upstream", "PhotoCraft (the engine Fotry is based on)", &["Help"], None),
     ("help.reportIssue", "Report an Issue…", &["Help"], None),
     ("help.systemInfo", "System Info…", &["Help"], None),
-    ("help.about", "About Array", &["Help"], None),
+    ("help.about", "About Fotry", &["Help"], None),
 ];
 
 /// Window › <document>: the open documents, listed at the end of the Window menu as in Photoshop.
@@ -289,7 +289,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
             Ok(Value::Null)
         }
         "layer.duplicate" if params.as_object().is_none_or(|o| o.is_empty()) => crate::duplicate_layer_ui::open(app),
-        // Array: Image › Upscale… asks for the method and the scale first.
+        // Fotry: Image › Upscale… asks for the method and the scale first.
         "image.upscale" if params.as_object().is_none_or(|o| o.is_empty()) => {
             Ok(json!({"dialog": crate::dialogs::open_command_dialog(app, "image.upscale", "Upscale")}))
         }

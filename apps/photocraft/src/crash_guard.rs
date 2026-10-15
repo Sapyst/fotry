@@ -11,7 +11,7 @@ use std::panic::{AssertUnwindSafe, catch_unwind};
 pub fn install_hook() {
     let default = std::panic::take_hook();
     std::panic::set_hook(Box::new(move |info| {
-        log::error!("Array internal error: {info}");
+        log::error!("Fotry internal error: {info}");
         default(info);
     }));
 }

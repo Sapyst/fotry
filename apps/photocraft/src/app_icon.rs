@@ -27,9 +27,9 @@ pub fn window_icon() -> egui::IconData {
 }
 
 #[cfg(target_os = "macos")]
-const PNG: &[u8] = include_bytes!("../../../assets/array/array-1024.png");
+const PNG: &[u8] = include_bytes!("../../../assets/fotry/fotry-1024.png");
 #[cfg(not(target_os = "macos"))]
-const PNG: &[u8] = include_bytes!("../../../assets/array/array-256.png");
+const PNG: &[u8] = include_bytes!("../../../assets/fotry/fotry-256.png");
 
 #[cfg(test)]
 mod tests {
