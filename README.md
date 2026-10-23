@@ -60,7 +60,9 @@ Branch `fotry` follows PhotoCraft's `main` (`git fetch upstream && git rebase up
 
 ## License
 
-MIT OR Apache-2.0, as PhotoCraft (`LICENSE-MIT`, `LICENSE-APACHE`, `NOTICE`, `ATTRIBUTION.md`).
+Fotry as a whole, and our changes, are under [GPL-3.0-or-later](LICENSE). The PhotoCraft code it started from
+is MIT OR Apache-2.0 by the ArtCraft team; those licenses, the `NOTICE` and `ATTRIBUTION.md` are kept
+(`LICENSE-MIT`, `LICENSE-APACHE`). Releases before this change were MIT OR Apache-2.0 and stay so.
 
 The photos in the screenshots are in the public domain (CC0), from Wikimedia Commons:
 [Lake Mountain Landscape](https://commons.wikimedia.org/wiki/File:Lake_Mountain_Landscape.jpg) and
