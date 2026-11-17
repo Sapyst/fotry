@@ -53,10 +53,16 @@ enum Palette {
     SoftDark,
     /// A low-contrast light theme: pale violet-grey surfaces, softened dark text and a periwinkle accent.
     SoftLight,
+    /// Fotry: the Arch Aero desktop's dark look (`crate::aero`), the default.
+    AeroDark,
+    /// Fotry: the Arch Aero desktop's light look (`crate::aero`).
+    AeroLight,
 }
 
 impl Palette {
-    const ALL: [Palette; 14] = [
+    const ALL: [Palette; 16] = [
+        Palette::AeroDark,
+        Palette::AeroLight,
         Palette::Pro,
         Palette::ProMedium,
         Palette::ProLightGray,
@@ -90,6 +96,8 @@ impl Palette {
             Palette::BreezeDark => ("craft.breeze", true),
             Palette::SoftDark => ("craft.soft", true),
             Palette::SoftLight => ("craft.soft", false),
+            Palette::AeroDark => (crate::aero::ID, true),
+            Palette::AeroLight => (crate::aero::ID, false),
         }
     }
 
@@ -109,16 +117,18 @@ impl Palette {
             Palette::BreezeDark => "Breeze Dark",
             Palette::SoftDark => "Soft Dark",
             Palette::SoftLight => "Soft Light",
+            Palette::AeroDark => "Aero (Dark)",
+            Palette::AeroLight => "Aero (Light)",
         }
     }
 
     /// The Light Theme row of the Appearance settings, in PhotoCraft's order.
-    const LIGHT_ROW: [Palette; 7] =
-        [Palette::ProLight, Palette::ProLightGray, Palette::StudioLight, Palette::Classic, Palette::Adwaita, Palette::BreezeLight, Palette::SoftLight];
+    const LIGHT_ROW: [Palette; 8] =
+        [Palette::AeroLight, Palette::ProLight, Palette::ProLightGray, Palette::StudioLight, Palette::Classic, Palette::Adwaita, Palette::BreezeLight, Palette::SoftLight];
 
     /// The Dark Theme row, in PhotoCraft's order.
-    const DARK_ROW: [Palette; 7] =
-        [Palette::ProMedium, Palette::Pro, Palette::Studio, Palette::SolarizedDark, Palette::AdwaitaDark, Palette::BreezeDark, Palette::SoftDark];
+    const DARK_ROW: [Palette; 8] =
+        [Palette::AeroDark, Palette::ProMedium, Palette::Pro, Palette::Studio, Palette::SolarizedDark, Palette::AdwaitaDark, Palette::BreezeDark, Palette::SoftDark];
 
     /// Photoshop's four interface brightnesses, darkest first.
     const BRIGHTNESSES: [Palette; 4] = [Palette::Pro, Palette::ProMedium, Palette::ProLightGray, Palette::ProLight];
@@ -157,9 +167,9 @@ impl PartialEq for AppTheme {
 }
 
 impl Default for AppTheme {
-    /// The suite default, Pro (Medium Gray).
+    /// Fotry's default, Aero (Dark).
     fn default() -> Self {
-        Self::from(Palette::ProMedium)
+        Self::from(Palette::AeroDark)
     }
 }
 
@@ -182,22 +192,22 @@ palette_themes! {
     pro => Pro, pro_medium => ProMedium, pro_light_gray => ProLightGray, pro_light => ProLight,
     studio => Studio, studio_light => StudioLight, classic => Classic, solarized_dark => SolarizedDark,
     adwaita => Adwaita, adwaita_dark => AdwaitaDark, breeze_light => BreezeLight, breeze_dark => BreezeDark,
-    soft_dark => SoftDark, soft_light => SoftLight,
+    soft_dark => SoftDark, soft_light => SoftLight, aero_dark => AeroDark, aero_light => AeroLight,
 }
 
 impl AppTheme {
     /// The themes PhotoCraft has palettes for, in the order of its Appearance settings.
-    pub fn all() -> [AppTheme; 14] {
+    pub fn all() -> [AppTheme; 16] {
         Palette::ALL.map(AppTheme::from)
     }
 
     /// The themes the Light Theme row of the Appearance settings offers, in its order.
-    pub fn light_row() -> [AppTheme; 7] {
+    pub fn light_row() -> [AppTheme; 8] {
         Palette::LIGHT_ROW.map(AppTheme::from)
     }
 
     /// The themes the Dark Theme row offers, in its order.
-    pub fn dark_row() -> [AppTheme; 7] {
+    pub fn dark_row() -> [AppTheme; 8] {
         Palette::DARK_ROW.map(AppTheme::from)
     }
 
@@ -356,6 +366,7 @@ impl Tokens {
 
     fn for_palette(kind: Palette) -> Self {
         match kind {
+            Palette::AeroDark | Palette::AeroLight => crate::aero::tokens(kind.is_dark()),
             // Sampled from Photoshop 2026's default brightness (raw display values).
             Palette::ProMedium => Tokens {
                 dark: kind.is_dark(),

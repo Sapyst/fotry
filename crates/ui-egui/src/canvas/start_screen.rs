@@ -65,9 +65,9 @@ fn links() -> [StartLink; 5] {
     [
         StartLink::command(tl!("Home"), Some(IconId::new("home")), "window.home"),
         StartLink::url(tl!("Learn"), Some(IconId::new("sparkles")), crate::links::TUTORIALS),
-        StartLink::url(tl!("Website"), Some(IconId::new("link")), crate::links::APP_PAGE),
-        StartLink::url(tl!("Discord"), Some(IconId::new("globe")), crate::links::DISCORD),
-        StartLink::url(tl!("GitHub"), Some(IconId::new("globe")), crate::links::GITHUB),
+        StartLink::url(tl!("Arch Quilly"), Some(IconId::new("link")), crate::links::APP_PAGE),
+        StartLink::url(tl!("PhotoCraft"), Some(IconId::new("globe")), crate::links::UPSTREAM),
+        StartLink::url(tl!("Report an issue"), Some(IconId::new("globe")), crate::links::ISSUES),
     ]
 }
 

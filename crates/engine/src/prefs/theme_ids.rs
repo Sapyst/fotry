@@ -28,6 +28,9 @@ pub fn alias(name: &str) -> Option<(&'static str, bool)> {
         "breezedark" | "kdedark" | "plasmadark" => ("craft.breeze", true),
         "softdark" => ("craft.soft", true),
         "softlight" => ("craft.soft", false),
+        // Fotry: the Aero names saved before theme ids.
+        "aerodark" => ("aero", true),
+        "aerolight" => ("aero", false),
         _ => return None,
     })
 }

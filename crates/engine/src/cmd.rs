@@ -110,6 +110,8 @@ pub mod history_options_cmds;
 pub mod history_select_cmds;
 pub mod history_source_cmds;
 pub mod image_cmds;
+/// Fotry: Image › Upscale….
+pub mod upscale_cmds;
 pub mod layer_copy_cmds;
 pub mod layer_css_cmds;
 pub mod layer_label_cmds;
@@ -1382,6 +1384,7 @@ fn build() -> Vec<CommandSpec> {
     v.extend(crate::retouch_cmds::specs());
     v.extend(crate::redeye_cmds::specs());
     v.extend(crate::image_cmds::specs());
+    v.extend(crate::commands::upscale_cmds::specs());
     v.extend(crate::perspective_crop_cmds::specs());
     v.extend(crate::selection_cmds::specs());
     v.extend(crate::magnetic_cmds::specs());

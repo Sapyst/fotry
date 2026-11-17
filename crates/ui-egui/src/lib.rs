@@ -13,8 +13,11 @@
 /// prompt shows both, and an AppImage's menu entry gets the icon.
 #[cfg(not(target_arch = "wasm32"))]
 pub const UPDATE_APP: craft::update::app::App = craft::update::app::App {
-    icon_png: Some(include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/ai.storyteller.photocraft.png")),
+    icon_png: Some(include_bytes!("../../../assets/fotry/fotry-128.png")),
     accent: Some([0x2f, 0x7b, 0xf5]),
+    // Fotry: its own name and repository, so the updater never offers a PhotoCraft build over Fotry.
+    name: "Fotry",
+    repo: "Sapyst/fotry",
     ..craft::update::suite::PHOTOCRAFT
 };
 
@@ -24,6 +27,8 @@ macro_rules! tl {
         $crate::i18n::t($s)
     };
 }
+pub mod aero;
+mod upscale_ui;
 mod brush_mode_menu;
 pub mod canvas;
 #[cfg(not(target_arch = "wasm32"))]

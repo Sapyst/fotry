@@ -4,7 +4,7 @@
 //! `class:`, #6697). Without one the app id is empty.
 
 /// Matches the `.desktop` file and hicolor icon name, so Wayland docks pick up the icon.
-pub const APP_ID: &str = "ai.storyteller.photocraft";
+pub const APP_ID: &str = "com.archquilly.Fotry";
 
 /// A builder for an extra OS window, carrying [`APP_ID`].
 pub fn builder() -> egui::ViewportBuilder {

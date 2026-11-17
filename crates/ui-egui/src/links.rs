@@ -6,16 +6,17 @@ use serde_json::{Value, json};
 
 use crate::PhotocraftApp;
 
-pub const DISCORD: &str = "https://discord.gg/artcraft";
-pub const ARTCRAFT_WEBSITE: &str = "https://getartcraft.com";
-pub const APP_PAGE: &str = "https://getartcraft.com/apps/photocraft";
+// Fotry: the Arch Quilly suite's links. PhotoCraft (the engine Fotry is based on) is credited in
+// plain text and linked to its repository; the ArtCraft marks are not used (docs/brand/LICENSE-brand.txt).
+pub const UPSTREAM: &str = "https://github.com/storytold/photocraft";
+pub const APP_PAGE: &str = "https://github.com/Sapyst/quilly";
 pub const TUTORIALS: &str = "https://getartcraft.com/tutorials";
-pub const GITHUB: &str = "https://github.com/storytold/photocraft";
-pub const ISSUES: &str = "https://github.com/storytold/photocraft/issues";
+pub const GITHUB: &str = "https://github.com/Sapyst/quilly";
+pub const ISSUES: &str = "https://github.com/Sapyst/quilly/issues";
 
 /// Help-menu link commands: (id, url). Labels live in `menus::UI_COMMANDS`.
 pub const COMMANDS: &[(&str, &str)] =
-    &[("help.discord", DISCORD), ("help.website", APP_PAGE), ("help.artcraftWebsite", ARTCRAFT_WEBSITE), ("help.github", GITHUB), ("help.reportIssue", ISSUES)];
+    &[("help.website", APP_PAGE), ("help.upstream", UPSTREAM), ("help.reportIssue", ISSUES)];
 
 pub fn url_for(id: &str) -> Option<&'static str> {
     COMMANDS.iter().find(|c| c.0 == id).map(|c| c.1)

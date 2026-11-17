@@ -584,6 +584,10 @@ pub(crate) fn cancel_for_closed(app: &mut PhotocraftApp, ctx: &egui::Context, cl
 /// Slice options and Divide, the adjustment editor for `image.adjustments.*`, the schema dialog for filters, otherwise a
 /// bare command form. The error is an opener's refusal text.
 pub fn open_command_dialog(app: &mut PhotocraftApp, command: &str, label: &str) -> Result<DialogId, String> {
+    // Fotry: Image › Upscale… asks for the method and the scale.
+    if command == crate::upscale_ui::COMMAND {
+        return Ok(crate::upscale_ui::open(app));
+    }
     if command == "view.newGuideLayout" {
         return guide_layout_ui::open(app).ok_or_else(|| "no document".to_string());
     }

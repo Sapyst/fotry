@@ -191,10 +191,10 @@ fn mode_choice(mode: AppearanceMode) -> ModeChoice {
     }
 }
 
-/// PhotoCraft's theme in the dark mode when nobody chose one: Pro (Medium Gray).
-const DEFAULT_DARK: &str = "craft.artcraft";
-/// PhotoCraft's theme in the light mode when nobody chose one: Pro (Light).
-const DEFAULT_LIGHT: &str = "craft.pro";
+/// Fotry's theme in the dark mode when nobody chose one: Aero (Dark).
+const DEFAULT_DARK: &str = crate::aero::ID;
+/// Fotry's theme in the light mode when nobody chose one: Aero (Light).
+const DEFAULT_LIGHT: &str = crate::aero::ID;
 
 /// What PhotoCraft shows for each suite field nobody has chosen: Pro (Medium Gray) in the dark
 /// mode, Pro in the light, and the dark mode.
@@ -202,7 +202,7 @@ fn defaults() -> AppDefaults {
     let theme = |id: &str| ThemeId::parse(id).unwrap_or_else(|_| ThemeId::suite_default());
     AppDefaults {
         theme: ThemePair { light: theme(DEFAULT_LIGHT), dark: theme(DEFAULT_DARK) },
-        mode: ModeChoice::Dark,
+        mode: ModeChoice::System,
         size: Size::default(),
         sizes: (**app_sizes()).clone(),
     }
@@ -238,7 +238,7 @@ impl Default for Framework {
 
 fn build_host(sections: &Arc<PrefSections>, lang: &str, files: Option<&Arc<dyn Files>>) -> Host {
     let i18n = i18n::framework_i18n();
-    let mut builder = Host::builder(AppInfo { id: "photocraft", name: "PhotoCraft", version: env!("CARGO_PKG_VERSION") })
+    let mut builder = Host::builder(AppInfo { id: "photocraft", name: "Fotry", version: env!("CARGO_PKG_VERSION") })
         .i18n(Arc::clone(i18n))
         .settings(Arc::clone(sections) as Arc<dyn SectionStore>)
         .jobs(craft::host::default_jobs());
@@ -352,7 +352,10 @@ impl Framework {
         use craft::theme_store::{StoreOptions, SuiteDir, SuiteWatch};
         let ctx = ctx.clone();
         let options = StoreOptions::new(concat!("photocraft ", env!("CARGO_PKG_VERSION")));
-        self.suite = SuiteClient::new(SuiteWatch::open(&SuiteDir::resolve(false), options, move || ctx.request_repaint()));
+        let dir = SuiteDir::resolve(false);
+        // Fotry: Aero is in the suite's library, so its menus list it.
+        crate::aero::install_library_theme(dir.path());
+        self.suite = SuiteClient::new(SuiteWatch::open(&dir, options, move || ctx.request_repaint()));
         self.synced = None;
         self.synced_rev = None;
         self.started = false;
@@ -685,7 +688,7 @@ mod tests {
     #[test]
     fn every_palette_theme_is_a_builtin() {
         let builtins = craft::theme::builtins();
-        for theme in crate::theme::AppTheme::all() {
+        for theme in crate::theme::AppTheme::all().into_iter().filter(|t| t.id().as_str() != crate::aero::ID) {
             assert!(builtins.iter().any(|t| t.id == *theme.id()), "{} is no built-in theme", theme.id().as_str());
         }
         assert_eq!(crate::theme::AppTheme::pro_medium().id().as_str(), "craft.artcraft");

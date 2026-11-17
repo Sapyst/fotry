@@ -429,9 +429,9 @@ impl Interface {
 impl Default for Interface {
     fn default() -> Self {
         Self {
-            appearance_mode: AppearanceMode::Dark,
-            dark_theme: "craft.artcraft".into(),
-            light_theme: "craft.pro".into(),
+            appearance_mode: AppearanceMode::Auto,
+            dark_theme: "aero".into(),
+            light_theme: "aero".into(),
             favorite_themes: Vec::new(),
             canvas_color: CanvasColor::Default,
             canvas_custom_color: "#282828".into(),

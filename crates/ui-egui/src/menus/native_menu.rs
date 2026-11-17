@@ -20,7 +20,7 @@ use crate::PhotocraftApp;
 use crate::menus::items;
 
 /// The name the app menu, About, Hide and Quit show.
-pub const APP_NAME: &str = "PhotoCraft";
+pub const APP_NAME: &str = "Fotry";
 
 /// [`items::model`]'s menus laid out as a Mac menu bar, in the UI language.
 ///

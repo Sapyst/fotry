@@ -79,14 +79,14 @@ pub fn credits() -> Credits {
 
 /// The About tab's contents: name, blurb, version, the community button and the project links.
 pub fn about_info(_app: &PhotocraftApp) -> AboutInfo {
-    AboutInfo::new("PhotoCraft", tl!("PhotoCraft — an open-source, native image editor written in Rust."), photocraft_engine::build_info::long_version())
-        .community(AboutLink::new(tl!("Join us on Discord"), crate::links::DISCORD))
-        .links([
-            AboutLink::new(tl!("PhotoCraft website"), crate::links::APP_PAGE),
-            AboutLink::new(tl!("GitHub"), crate::links::GITHUB),
-            AboutLink::new(tl!("ArtCraft"), crate::links::ARTCRAFT_WEBSITE),
-        ])
-        .built_with("egui · wgpu · photocraft-engine")
+    AboutInfo::new(
+        "Fotry",
+        tl!("Fotry — the image editor of the Arch Quilly suite. Based on PhotoCraft by the ArtCraft team (MIT OR Apache-2.0), written in Rust."),
+        photocraft_engine::build_info::long_version(),
+    )
+    .community(AboutLink::new(tl!("Arch Quilly on GitHub"), crate::links::APP_PAGE))
+    .links([AboutLink::new(tl!("Based on PhotoCraft"), crate::links::UPSTREAM), AboutLink::new(tl!("Report an issue"), crate::links::ISSUES)])
+    .built_with("egui · wgpu · photocraft-engine · Arch Quilly")
 }
 
 /// Opens the About dialog on `tab`.
