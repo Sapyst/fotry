@@ -34,7 +34,7 @@ photocraft-codecs = { workspace = true }
 photocraft-formats = { workspace = true }
 # Reading embedded thumbnail resources (1036/1033) for recent files in Home screen.
 craft-psd = { workspace = true }
-egui = { workspace = true }
+egui = { workspace = true, features = ["serde"] }
 egui_extras = { version = "0.37", default-features = false, features = ["svg"] }
 eframe = { workspace = true, features = ["wgpu", "accesskit", "clipboard"] }
 serde = { workspace = true }
@@ -60,6 +60,8 @@ sys-locale = "=0.3.2"
 winsafe = { version = "=0.0.29", default-features = false, features = ["kernel", "dxgi", "advapi"] }
 
 [dev-dependencies]
+# Writing a `config.toml` in the preferences tests (`toml::to_string`).
+toml = { version = "1.1", default-features = false, features = ["std", "serde", "display"] }
 photocraft-io = { workspace = true, features = ["testgen"] }
 # egui's own default fonts in tests, so contexts made with `Context::default()` (no
 # install_fonts) can lay out text.

@@ -280,7 +280,7 @@ pub fn menu(app: &mut PhotocraftApp, ctx: &egui::Context, id: &str, params: &Val
     }
     if let Some(ui) = params.get("ui") {
         return Some(if app.wide_angle.is_some() {
-            crate::control::dialogs::workspace_ui(app, ctx, KEY, ui)
+            crate::dialogs::hosted_workspace_ui(app, ctx, KEY, ui)
         } else {
             Err("Adaptive Wide Angle is not open".into())
         });

@@ -1,6 +1,34 @@
 #[cfg(target_arch = "wasm32")]
-use super::FileDialogFn;
+use crate::file_dialog::FileDialogFn;
 use super::{Document, OsEvent, Value, dds_options_ui, jobs_ui, jpeg_options_ui, monitor_status, targa_options_ui, tiff_options_ui};
+
+/// The app's settings store: craft's on the desktop. The web build has none (craft gates it off wasm32), so its
+/// [`Services::settings`] slot stays `None` and an uninhabited stand-in keeps the code reading that slot compiling.
+#[cfg(not(target_arch = "wasm32"))]
+pub type SettingsStore = craft::settings::SettingsStore<photocraft_engine::prefs::SavedPrefs>;
+#[cfg(target_arch = "wasm32")]
+pub enum SettingsStore {}
+#[cfg(target_arch = "wasm32")]
+impl SettingsStore {
+    pub fn get(&self) -> &photocraft_engine::prefs::SavedPrefs {
+        match *self {}
+    }
+    pub fn take_merged_change(&mut self) -> bool {
+        match *self {}
+    }
+    pub fn update(&mut self, _: impl FnOnce(&mut photocraft_engine::prefs::SavedPrefs)) -> bool {
+        match *self {}
+    }
+    pub fn update_at<I>(&mut self, _: I, _: impl FnOnce(&mut photocraft_engine::prefs::SavedPrefs)) -> bool {
+        match *self {}
+    }
+    pub fn tick<I>(&mut self, _: I) -> craft::settings::TickResult {
+        match *self {}
+    }
+    pub fn flush(&mut self) -> Result<(), craft::settings::SettingsError> {
+        match *self {}
+    }
+}
 
 /// The error a save gets while another save waits on its format prompt.
 pub(crate) const SAVE_OPTIONS_OPEN: &str = "Answer the TIFF, Targa, DDS or JPEG Options before starting another save";
@@ -508,9 +536,10 @@ pub struct Services {
     /// The file service the app's host answers file picks with (`HostBuilder::files`); `None` in tests that install none.
     pub files: Option<std::sync::Arc<dyn craft::host::Files>>,
     /// The main-thread side of the native file panels, pumped by the app.
+    #[cfg(not(target_arch = "wasm32"))]
     pub file_panels: Option<craft::dialogs::service::FilePanels>,
     /// The opened settings store and what opening it reported; `None` in the web build.
-    pub settings: Option<(craft::settings::SettingsStore<photocraft_engine::prefs::SavedPrefs>, craft::settings::LoadReport)>,
+    pub settings: Option<(SettingsStore, craft::settings::LoadReport)>,
     /// Decode a file's bytes into a document (PSD, PNG, JPEG, …).
     pub import: Option<ImportFn>,
     /// Encode a document for a file name (format chosen by extension).

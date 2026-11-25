@@ -10,7 +10,8 @@ use photocraft_doc::Document;
 use photocraft_ui_egui::i18n;
 use photocraft_ui_egui::served_fonts;
 use photocraft_ui_egui::theme::AppTheme;
-use photocraft_ui_egui::{FileDialogAnswer, FileDialogRequest, PhotocraftApp, Services};
+use photocraft_ui_egui::file_dialog::{FileDialogAnswer, FileDialogRequest};
+use photocraft_ui_egui::{PhotocraftApp, Services};
 use wasm_bindgen::JsCast as _;
 
 use crate::preset_bridge::{ActionRecovery, SaveWarning};
@@ -108,7 +109,7 @@ pub fn start() {
                     services.load_prefs = Some(Box::new(move || initial.take().unwrap_or_else(stored_preferences)));
                     let mut app = PhotocraftApp::with_context(cc.egui_ctx.clone(), session, services);
                     if !preset_warnings.is_empty() {
-                        photocraft_ui_egui::notices::post(&mut app, i18n::t("Some brush presets could not be loaded"), preset_warnings, true, None);
+                        photocraft_ui_egui::notices::post(&mut app, i18n::t("Some brush presets could not be loaded"), preset_warnings, craft::theme::variant::Tone::Bad, None);
                     }
                     listen_pen(&pen_target, app.stylus.feed.clone());
                     app.set_theme(&cc.egui_ctx, AppTheme::pro());
@@ -438,7 +439,7 @@ impl WebShell {
                 }
             });
         }
-        served_fonts::install(&mut self.app, ctx, arrived);
+        served_fonts::install(&mut self.app, arrived);
     }
 }
 
@@ -557,7 +558,7 @@ fn services(inbox: Inbox, place_inbox: PlaceInbox, cursor_pos: photocraft_ui_egu
             // asks for several files (`multiple`), each opened in its own tab.
             FileDialogRequest::Open { multiple, extensions, .. } => wasm_bindgen_futures::spawn_local(async move {
                 let dialog = if let Some(exts) = extensions {
-                    rfd::AsyncFileDialog::new().add_filter("Supported Files", &exts)
+                    rfd::AsyncFileDialog::new().add_filter("Supported Files", exts.as_slice())
                 } else {
                     rfd::AsyncFileDialog::new().add_filter("All Formats", OPEN_EXTS).add_filter("SVG", SVG_EXTS)
                 };

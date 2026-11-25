@@ -1897,6 +1897,7 @@ pub const LEGACY_PREFS_FILE: &str = "preferences.json";
 
 /// The settings store's options for the folder `dir` (in memory without one): `config.toml` there, importing
 /// [`LEGACY_PREFS_FILE`] through [`parse_legacy_prefs`] while there is none.
+#[cfg(not(target_arch = "wasm32"))]
 pub fn store_options(dir: Option<&std::path::Path>) -> craft::settings::OpenOptions<SavedPrefs> {
     let location = dir.map_or(craft::settings::Location::Memory, |dir| craft::settings::Location::Dir(dir.to_path_buf()));
     let legacy = dir.map(|dir| craft::settings::LegacyFile { path: dir.join(LEGACY_PREFS_FILE), parse: parse_legacy_prefs }).into_iter().collect();
@@ -1906,8 +1907,15 @@ pub fn store_options(dir: Option<&std::path::Path>) -> craft::settings::OpenOpti
 /// The preferences saved in `dir` as the app's settings store loads them, read without opening the store
 /// (`craft::settings::SettingsStore::read`, which writes nothing): the launch reads before the window opens and
 /// `photocraft-cli mcp`. Defaults without a folder.
+/// On the web there is no settings store (craft gates it off wasm32): defaults.
 pub fn read_saved(dir: Option<&std::path::Path>) -> SavedPrefs {
-    craft::settings::SettingsStore::read(&store_options(dir)).0
+    #[cfg(not(target_arch = "wasm32"))]
+    return craft::settings::SettingsStore::read(&store_options(dir)).0;
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = dir;
+        SavedPrefs::default()
+    }
 }
 
 /// A value the load reset, in the form the settings store reports it: the dotted key path as the

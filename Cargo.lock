@@ -6724,6 +6724,7 @@ dependencies = [
 name = "photocraft-web"
 version = "0.23.1"
 dependencies = [
+ "craft",
  "craft-image-codecs",
  "craft-psd",
  "eframe",

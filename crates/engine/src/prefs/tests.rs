@@ -101,12 +101,13 @@ fn home_recent_files_preference_defaults_on_persists_and_resets() {
 #[test]
 fn appearance_defaults_and_legacy_theme_migrate() {
     let p = Preferences::default();
-    // New users keep Photoshop's default; following the system is opt-in.
-    assert_eq!(p.interface.appearance_mode, AppearanceMode::Dark);
-    assert_eq!(p.interface.dark_theme, "craft.artcraft");
-    assert_eq!(p.interface.light_theme, "craft.pro");
+    // Fotry's default: the Aero theme for both, following the system's light or dark.
+    assert_eq!(p.interface.appearance_mode, AppearanceMode::Auto);
+    assert_eq!(p.interface.dark_theme, "aero");
+    assert_eq!(p.interface.light_theme, "aero");
     for (theme, mode, dark, light) in
-        [("pro", AppearanceMode::Dark, "craft.pro", "craft.pro"), ("classic", AppearanceMode::Light, "craft.artcraft", "craft.classic")]
+        // A legacy theme sets the side it names; the other side keeps the default (Aero).
+        [("pro", AppearanceMode::Dark, "craft.pro", "aero"), ("classic", AppearanceMode::Light, "aero", "craft.classic")]
     {
         let mut s = Session::new();
         s.load_prefs_json(&json!({"interface": {"theme": theme}}).to_string()).unwrap();
